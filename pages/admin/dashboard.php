@@ -23,57 +23,54 @@ $jml_mk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM 
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
 </head>
 <body>
-    <header>
-        <h1>Dashboard Administrator</h1>
-        <nav>
-            <a href="../../auth/logout.php">Logout</a>
-        </nav>
-    </header>
-    <div class="main-wrapper">
-        <aside class="sidebar-menu">
-            <!-- Manajemen Akademik -->
+    <header class="sticky-header">
+    <h1>Dashboard Administrator</h1>
+    <nav>
+        <a href="../../auth/logout.php">Logout</a>
+    </nav>
+</header>
+
+<div class="main-wrapper">
+    <aside class="sidebar sticky-sidebar">
+        <ul class="sidebar-menu">
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Data Master</span>
-                <span class="arrow">&#9654;</span>
+                <span>Data Master</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
-                <li><a href="dosen.php">Data Dosen</a></li>
-                <li><a href="matakuliah.php">Data Mata Kuliah</a></li>
-                <li><a href="kelas.php">Data Kelas</a></li>
-            </ul>
+                    <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
+                    <li><a href="dosen.php">Data Dosen</a></li>
+                    <li><a href="matakuliah.php">Data Mata Kuliah</a></li>
+                    <li><a href="kelas.php">Data Kelas</a></li>
+                </ul>
+            </li>
 
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Manajemen Akademik</span>
-                <span class="arrow">&#9654;</span>
+                <span>Manajemen Akademik</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
+                    <li><a href="krs.php">Verifikasi KRS</a></li>
                     <li><a href="nilai.php">Monitoring Nilai</a></li>
-                    <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
+                    <li><a href="jadwal.php">Monitoring Jadwal</a></li>
                     <li><a href="users.php">Manajemen User</a></li>
                 </ul>
             </li>
 
-            <!-- Laporan & Statistik -->
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Laporan & Statistik</span>
-                <span class="arrow">&#9654;</span>
+                <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="#">Jumlah Mahasiswa per Prodi</a></li>
-                    <li><a href="#">Statistik SKS yang Diambil</a></li>
-                    <li><a href="#">Cetak Rekap Nilai & KHS</a></li>
+                    <li><a href="#">Statistik SKS</a></li>
+                    <li><a href="#">Cetak Rekap Nilai</a></li>
                 </ul>
             </li>
 
-            <!-- Pengaturan Sistem -->
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Pengaturan Sistem</span>
-                <span class="arrow">&#9654;</span>
+                <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="#">Ganti Tahun Ajaran</a></li>
-                    <li><a href="#">Pengaturan Role & Reset Password</a></li>
+                    <li><a href="#">Reset Password</a></li>
                 </ul>
             </li>
-        </aside>
+        </ul>
+    </aside>
         <main class="content">
             <h2>Statistik Akademik</h2>
             <div class="stats">

@@ -93,7 +93,7 @@ nav a {
 }
 
 .sidebar-menu li {
-    padding: 10px 15px;
+    padding: 12px 15px;
     padding-right: 35px;
     color: white;
     background-color: #1a252f;
@@ -132,4 +132,24 @@ nav a {
 
 .sidebar-menu .submenu li a:hover {
     color: #fff;
+}
+/* Sticky Header */
+header.sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #004080;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Sticky Sidebar */
+.sticky-sidebar {
+    position: sticky;
+    top: 70px; /* tinggi header */
+    height: calc(100vh - 70px);
+    overflow-y: auto;
 }

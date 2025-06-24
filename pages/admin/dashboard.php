@@ -33,6 +33,16 @@ $jml_mk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM 
 
     <!-- Manajemen Akademik -->
     <li class="dropdown" onclick="toggleDropdown(this)">
+        <span>Data Master</span>
+        <span class="arrow">&#9654;</span>
+        <ul class="submenu">
+        <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
+        <li><a href="dosen.php">Data Dosen</a></li>
+        <li><a href="matakuliah.php">Data Mata Kuliah</a></li>
+        <li><a href="kelas.php">Data Kelas</a></li>
+    </ul>
+
+    <li class="dropdown" onclick="toggleDropdown(this)">
         <span>Manajemen Akademik</span>
         <span class="arrow">&#9654;</span>
         <ul class="submenu">

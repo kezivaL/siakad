@@ -1,0 +1,135 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #1e2a38;
+    color: #333;
+}
+
+header {
+    background-color: #004080;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.main-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #1e2a38; /* Warna sidebar */
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #004080;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar li {
+    margin: 10px 0;
+}
+
+.sidebar a {
+    color: #333;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    color: #004080;
+    font-weight: bold;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+    background-color: #eef1f5;
+    overflow-y: auto;
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+    flex: 1 1 200px;
+    text-align: center;
+}
+
+.card h3 {
+    margin: 0 0 10px;
+    color: #004080;
+}
+.sidebar-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    padding: 10px 15px;
+    padding-right: 35px;
+    color: white;
+    background-color: #1a252f;
+    border-bottom: 1px solid #1a252f;
+    cursor: pointer;
+    position: relative;
+}
+
+.sidebar-menu li:hover {
+    background-color: #1a252f;
+}
+
+.sidebar-menu .arrow {
+    position: absolute;
+    right: 15px;
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+
+.sidebar-menu .submenu {
+    display: none;
+    list-style: none;
+    padding-left: 10px;
+    background-color: #1a252f;
+}
+
+.sidebar-menu .submenu li {
+    padding: 8px 10px;
+    font-size: 14px;
+}
+
+.sidebar-menu .submenu li a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+.sidebar-menu .submenu li a:hover {
+    color: #fff;
+}

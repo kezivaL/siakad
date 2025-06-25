@@ -106,16 +106,16 @@ if (isset($_GET['edit'])) {
             <li class="dropdown" onclick="toggleDropdown(this)">
                 <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="laporan.php">Jumlah Mahasiswa per Prodi</a></li>
-                    <li><a href="#">Statistik SKS</a></li>
+                    <li><a href="jumlah.php">Jumlah Mahasiswa per Prodi</a></li>
+                    <li><a href="sks.php">Statistik SKS</a></li>
                 </ul>
             </li>
 
             <li class="dropdown" onclick="toggleDropdown(this)">
                 <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="#">Ganti Tahun Ajaran</a></li>
-                    <li><a href="#">Reset Password</a></li>
+                    <li><a href="tahun.php">Ganti Tahun Ajaran</a></li>
+                    <li><a href="reset.php">Reset Password</a></li>
                 </ul>
             </li>
         </ul>

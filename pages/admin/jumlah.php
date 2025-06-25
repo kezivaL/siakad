@@ -2,37 +2,32 @@
 session_start();
 include '../../includes/koneksi.php';
 
-// Jika belum login, arahkan ke login
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../../auth/login.php");
     exit;
 }
 
-// Statistik (jumlah data)
-$jml_mhs = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM mahasiswa"))['total'];
-$jml_dosen = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM dosen"))['total'];
-$jml_kelas = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM kelas"))['total'];
-$jml_mk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM mata_kuliah"))['total'];
+$result = mysqli_query($conn, "SELECT prodi, COUNT(*) as jumlah FROM mahasiswa GROUP BY prodi ORDER BY jumlah DESC");
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Sistem Akademik</title>
+    <title>Jumlah Mahasiswa per Prodi</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/laporan.css">
 </head>
 <body>
-    <header class="sticky-header">
+<header class="sticky-header">
     <h1>Dashboard Administrator</h1>
-    <nav>
-        <a href="../../auth/logout.php">Logout</a>
-    </nav>
+    <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
 
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
+            <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
             <li class="dropdown" onclick="toggleDropdown(this)">
                 <span>Data Master</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
@@ -42,12 +37,12 @@ $jml_mk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM 
                     <li><a href="kelas.php">Data Kelas</a></li>
                 </ul>
             </li>
-
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Manajemen Akademik</span> <span class="arrow">&#9654;</span>
+                <span>Manajemen Akademik</span>
+                <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="krs.php">Verifikasi KRS</a></li>
-                    <li><a href="jadwal.php">Monitoring Jadwal</a></li>
+                    <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
+                    <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
                     <li><a href="users.php">Manajemen User</a></li>
                 </ul>
             </li>
@@ -69,37 +64,45 @@ $jml_mk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM 
             </li>
         </ul>
     </aside>
-        <main class="content">
-            <h2>Statistik Akademik</h2>
-            <div class="stats">
-                <div class="card">
-                    <h3>Mahasiswa</h3>
-                    <p><?= $jml_mhs ?> orang</p>
-                </div>
-                <div class="card">
-                    <h3>Dosen</h3>
-                    <p><?= $jml_dosen ?> orang</p>
-                </div>
-                <div class="card">
-                    <h3>Kelas</h3>
-                    <p><?= $jml_kelas ?> kelas</p>
-                </div>
-                <div class="card">
-                    <h3>Mata Kuliah</h3>
-                    <p><?= $jml_mk ?> matkul</p>
-                </div>
-            </div>
-        </main>
-    </div>
-<script>
-    function toggleDropdown(el) {
-        const submenu = el.querySelector(".submenu");
-        const arrow = el.querySelector(".arrow");
 
-        const isOpen = submenu.style.display === "block";
-        submenu.style.display = isOpen ? "none" : "block";
-        arrow.innerHTML = isOpen ? "&#9654;" : "&#9660;"; // ▶ ▼
-    }
+    <main class="content">
+        <div class="container">
+            <h2>Jumlah Mahasiswa per Program Studi</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Program Studi</th>
+                        <th>Jumlah Mahasiswa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $no = 1;
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>
+                                <td>{$no}</td>
+                                <td>{$row['prodi']}</td>
+                                <td>{$row['jumlah']}</td>
+                            </tr>";
+                        $no++;
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script>
+function toggleDropdown(el) {
+    const submenu = el.querySelector('.submenu');
+    const arrow = el.querySelector('.arrow');
+    const isOpen = submenu.style.display === 'block';
+    submenu.style.display = isOpen ? 'none' : 'block';
+    arrow.innerHTML = isOpen ? '&#9654;' : '&#9660;';
+}
 </script>
+
 </body>
 </html>

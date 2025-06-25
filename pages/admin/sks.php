@@ -6,15 +6,13 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../../auth/login.php");
     exit;
 }
-
-$result = mysqli_query($conn, "SELECT prodi, COUNT(*) as jumlah FROM mahasiswa GROUP BY prodi ORDER BY jumlah DESC");
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Jumlah Mahasiswa per Prodi</title>
+    <title>Statistik SKS Mahasiswa</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/laporan.css">
 </head>
@@ -47,23 +45,19 @@ $result = mysqli_query($conn, "SELECT prodi, COUNT(*) as jumlah FROM mahasiswa G
                 </ul>
             </li>
 
-            <!-- Laporan & Statistik -->
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Laporan & Statistik</span>
-                <span class="arrow">&#9654;</span>
+                <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="laporan.php">Jumlah Mahasiswa per Prodi</a></li>
-                    <li><a href="#">Statistik SKS yang Diambil</a></li>
+                    <li><a href="jumlah.php">Jumlah Mahasiswa per Prodi</a></li>
+                    <li><a href="sks.php">Statistik SKS</a></li>
                 </ul>
             </li>
 
-            <!-- Pengaturan Sistem -->
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Pengaturan Sistem</span>
-                <span class="arrow">&#9654;</span>
+                <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="#">Ganti Tahun Ajaran</a></li>
-                    <li><a href="#">Reset Password</a></li>
+                    <li><a href="tahun.php">Ganti Tahun Ajaran</a></li>
+                    <li><a href="reset.php">Reset Password</a></li>
                 </ul>
             </li>
         </ul>
@@ -71,25 +65,38 @@ $result = mysqli_query($conn, "SELECT prodi, COUNT(*) as jumlah FROM mahasiswa G
 
     <main class="content">
         <div class="container">
-            <h2>Jumlah Mahasiswa per Program Studi</h2>
+            <h2>Statistik SKS Mahasiswa</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Program Studi</th>
-                        <th>Jumlah Mahasiswa</th>
+                        <th>NPM</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>Total SKS</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $no = 1;
-                    while ($row = mysqli_fetch_assoc($result)) {
+                    $sql_mhs = "SELECT npm, nama FROM mahasiswa ORDER BY nama ASC";
+                    $result_mhs = mysqli_query($conn, $sql_mhs);
+
+                    while ($mhs = mysqli_fetch_assoc($result_mhs)) {
+                        $npm = $mhs['npm'];
+                        $nama = $mhs['nama'];
+
+                        $sql_sks = "
+                            SELECT SUM(mk.sks) AS total_sks
+                            FROM krs
+                            JOIN kelas k ON krs.id_kelas = k.id_kelas
+                            JOIN mata_kuliah mk ON k.kode_mk = mk.kode_mk
+                            WHERE krs.npm = '$npm'
+                        ";
+                        $total_sks = mysqli_fetch_assoc(mysqli_query($conn, $sql_sks))['total_sks'] ?? 0;
+
                         echo "<tr>
-                                <td>{$no}</td>
-                                <td>{$row['prodi']}</td>
-                                <td>{$row['jumlah']}</td>
-                            </tr>";
-                        $no++;
+                                <td>$npm</td>
+                                <td>$nama</td>
+                                <td>{$total_sks} SKS</td>
+                              </tr>";
                     }
                     ?>
                 </tbody>

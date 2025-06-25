@@ -74,9 +74,9 @@ if (isset($_GET['edit'])) {
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
-            <li><a href="dashboard.php">Dashboard</a></li>
+            <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Data Master</span><span class="arrow">&#9654;</span>
+                <span>Data Master</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
                     <li><a href="dosen.php">Data Dosen</a></li>
@@ -85,30 +85,28 @@ if (isset($_GET['edit'])) {
                 </ul>
             </li>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Manajemen Akademik</span><span class="arrow">&#9654;</span>
+                <span>Manajemen Akademik</span>
+                <span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
                     <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
                     <li><a href="users.php">Manajemen User</a></li>
                 </ul>
             </li>
-            <!-- Laporan & Statistik -->
+
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Laporan & Statistik</span>
-                <span class="arrow">&#9654;</span>
+                <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="laporan.php">Jumlah Mahasiswa per Prodi</a></li>
-                    <li><a href="#">Statistik SKS yang Diambil</a></li>
+                    <li><a href="jumlah.php">Jumlah Mahasiswa per Prodi</a></li>
+                    <li><a href="sks.php">Statistik SKS</a></li>
                 </ul>
             </li>
 
-            <!-- Pengaturan Sistem -->
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Pengaturan Sistem</span>
-                <span class="arrow">&#9654;</span>
+                <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="#">Ganti Tahun Ajaran</a></li>
-                    <li><a href="#">Reset Password</a></li>
+                    <li><a href="tahun.php">Ganti Tahun Ajaran</a></li>
+                    <li><a href="reset.php">Reset Password</a></li>
                 </ul>
             </li>
         </ul>

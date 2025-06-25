@@ -25,7 +25,7 @@ if (isset($_POST['simpan'])) {
 }
 
 // Ambil semua semester
-$semester = mysqli_query($conn, "SELECT * FROM semester ORDER BY tahun_ajaran DESC, semester DESC");
+$semester = mysqli_query($conn, "SELECT * FROM semester ORDER BY tahun_ajaran DESC, nama_semester DESC");
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +92,7 @@ $semester = mysqli_query($conn, "SELECT * FROM semester ORDER BY tahun_ajaran DE
                     <option value="">-- Pilih --</option>
                     <?php while ($s = mysqli_fetch_assoc($semester)) {
                         $aktif = $s['aktif'] == 1 ? ' (Aktif)' : '';
-                        echo "<option value='{$s['id_semester']}'>{$s['tahun_ajaran']} - Semester {$s['semester']}{$aktif}</option>";
+                        echo "<option value='{$s['id_semester']}'>{$s['tahun_ajaran']} - Semester {$s['nama_semester']}{$aktif}</option>";
                     } ?>
                 </select>
                 <button type="submit" name="simpan">Simpan</button>

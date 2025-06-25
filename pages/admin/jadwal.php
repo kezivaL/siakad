@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 include '../../includes/koneksi.php';
 
@@ -7,63 +7,48 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-$kode_mk = $nama_mk = $sks = $semester = "";
+$id_kelas = $hari = $jam_mulai = $jam_selesai = $ruang = "";
 
+// Simpan jadwal
 if (isset($_POST['simpan'])) {
-    $kode_mk = trim($_POST['kode_mk']);
-    $nama_mk = trim($_POST['nama_mk']);
-    $sks = trim($_POST['sks']);
-    $semester = trim($_POST['semester']);
+    $id_kelas = $_POST['id_kelas'];
+    $hari = $_POST['hari'];
+    $jam_mulai = $_POST['jam_mulai'];
+    $jam_selesai = $_POST['jam_selesai'];
+    $ruang = $_POST['ruang'];
 
-    if ($kode_mk === "" || $nama_mk === "" || $sks === "" || $semester === "") {
-        die("Semua data harus diisi.");
+    if ($id_kelas === "" || $hari === "" || $jam_mulai === "" || $jam_selesai === "" || $ruang === "") {
+        die("Semua kolom wajib diisi.");
     }
 
-    $cek = mysqli_query($conn, "SELECT * FROM mata_kuliah WHERE kode_mk = '$kode_mk'");
-    if (mysqli_num_rows($cek) > 0) {
-        $stmt = mysqli_prepare($conn, "UPDATE mata_kuliah SET nama_mk=?, sks=?, semester=? WHERE kode_mk=?");
-        mysqli_stmt_bind_param($stmt, "siss", $nama_mk, $sks, $semester, $kode_mk);
-    } else {
-        $stmt = mysqli_prepare($conn, "INSERT INTO mata_kuliah (kode_mk, nama_mk, sks, semester) VALUES (?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "ssis", $kode_mk, $nama_mk, $sks, $semester);
-    }
-
+    $stmt = mysqli_prepare($conn, "INSERT INTO jadwal (id_kelas, hari, jam_mulai, jam_selesai, ruang) VALUES (?, ?, ?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "issss", $id_kelas, $hari, $jam_mulai, $jam_selesai, $ruang);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("Location: matakuliah.php");
+    header("Location: jadwal.php");
     exit;
 }
 
 if (isset($_GET['hapus'])) {
-    $hapus_kode = $_GET['hapus'];
-    $stmt = mysqli_prepare($conn, "DELETE FROM mata_kuliah WHERE kode_mk = ?");
-    mysqli_stmt_bind_param($stmt, "s", $hapus_kode);
+    $hapus_id = $_GET['hapus'];
+    $stmt = mysqli_prepare($conn, "DELETE FROM jadwal WHERE id_jadwal = ?");
+    mysqli_stmt_bind_param($stmt, "i", $hapus_id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("Location: matakuliah.php");
+    header("Location: jadwal.php");
     exit;
 }
 
-if (isset($_GET['edit'])) {
-    $edit_kode = $_GET['edit'];
-    $result = mysqli_query($conn, "SELECT * FROM mata_kuliah WHERE kode_mk = '$edit_kode' LIMIT 1");
-    if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        $kode_mk = $row['kode_mk'];
-        $nama_mk = $row['nama_mk'];
-        $sks = $row['sks'];
-        $semester = $row['semester'];
-    }
-}
+$kelas_list = mysqli_query($conn, "SELECT k.id_kelas, mk.nama_mk FROM kelas k JOIN mata_kuliah mk ON k.kode_mk = mk.kode_mk");
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Data Mata Kuliah</title>
+    <title>Data Jadwal Kuliah</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/matakuliah.css">
+    <link rel="stylesheet" href="../../assets/css/jadwal.css">
 </head>
 <body>
 <header class="sticky-header">
@@ -117,19 +102,27 @@ if (isset($_GET['edit'])) {
 
     <main class="content">
         <div class="container">
-            <h2>Data Mata Kuliah</h2>
+            <h2>Data Jadwal Kuliah</h2>
             <form method="post" action="">
-                <label>Kode MK:</label>
-                <input type="text" name="kode_mk" value="<?= htmlspecialchars($kode_mk) ?>" <?= isset($_GET['edit']) ? 'readonly' : '' ?> required>
+                <label>Mata Kuliah:</label>
+                <select name="id_kelas" required>
+                    <option value="">-- Pilih Mata Kuliah --</option>
+                    <?php while ($k = mysqli_fetch_assoc($kelas_list)) {
+                        echo "<option value='{$k['id_kelas']}'>{$k['nama_mk']}</option>";
+                    } ?>
+                </select>
 
-                <label>Nama Mata Kuliah:</label>
-                <input type="text" name="nama_mk" value="<?= htmlspecialchars($nama_mk) ?>" required>
+                <label>Hari:</label>
+                <input type="text" name="hari" required>
 
-                <label>SKS:</label>
-                <input type="number" name="sks" value="<?= htmlspecialchars($sks) ?>" required>
+                <label>Jam Mulai:</label>
+                <input type="time" name="jam_mulai" required>
 
-                <label>Semester:</label>
-                <input type="text" name="semester" value="<?= htmlspecialchars($semester) ?>" required>
+                <label>Jam Selesai:</label>
+                <input type="time" name="jam_selesai" required>
+
+                <label>Ruang:</label>
+                <input type="text" name="ruang" required>
 
                 <button type="submit" name="simpan">Simpan</button>
             </form>
@@ -137,34 +130,38 @@ if (isset($_GET['edit'])) {
             <table>
                 <thead>
                     <tr>
-                        <th>Kode</th>
-                        <th>Nama Mata Kuliah</th>
-                        <th>SKS</th>
-                        <th>Semester</th>
+                        <th>Mata Kuliah</th>
+                        <th>Hari</th>
+                        <th>Jam</th>
+                        <th>Ruang</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $data = mysqli_query($conn, "SELECT * FROM mata_kuliah ORDER BY kode_mk ASC");
-                    while ($row = mysqli_fetch_assoc($data)) {
-                        echo "<tr>
-                            <td>{$row['kode_mk']}</td>
-                            <td>{$row['nama_mk']}</td>
-                            <td>{$row['sks']}</td>
-                            <td>{$row['semester']}</td>
-                            <td>
-                                <a href='?edit={$row['kode_mk']}' class='edit-btn'>Edit</a>
-                                <a href='?hapus={$row['kode_mk']}' onclick='return confirm(\"Hapus data ini?\")' class='delete-btn'>Hapus</a>
-                            </td>
-                        </tr>";
-                    }
-                    ?>
+                <?php
+                $jadwal = mysqli_query($conn, "
+                    SELECT j.*, mk.nama_mk FROM jadwal j 
+                    JOIN kelas k ON j.id_kelas = k.id_kelas 
+                    JOIN mata_kuliah mk ON k.kode_mk = mk.kode_mk
+                ");
+                while ($row = mysqli_fetch_assoc($jadwal)) {
+                    echo "<tr>
+                        <td>{$row['nama_mk']}</td>
+                        <td>{$row['hari']}</td>
+                        <td>{$row['jam_mulai']} - {$row['jam_selesai']}</td>
+                        <td>{$row['ruang']}</td>
+                        <td>
+                            <a href='?hapus={$row['id_jadwal']}' onclick='return confirm(\"Yakin hapus jadwal ini?\")' class='delete-btn'>Hapus</a>
+                        </td>
+                    </tr>";
+                }
+                ?>
                 </tbody>
             </table>
         </div>
     </main>
 </div>
+
 <script>
 function toggleDropdown(el) {
     const submenu = el.querySelector('.submenu');

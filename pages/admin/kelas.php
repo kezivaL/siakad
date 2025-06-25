@@ -99,7 +99,7 @@ if (isset($_GET['edit'])) {
                 <span>Laporan & Statistik</span>
                 <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="#">Jumlah Mahasiswa per Prodi</a></li>
+                    <li><a href="laporan.php">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="#">Statistik SKS yang Diambil</a></li>
                 </ul>
             </li>
@@ -110,7 +110,7 @@ if (isset($_GET['edit'])) {
                 <span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="#">Ganti Tahun Ajaran</a></li>
-                    <li><a href="#">Pengaturan Role & Reset Password</a></li>
+                    <li><a href="#">Reset Password</a></li>
                 </ul>
             </li>
         </ul>

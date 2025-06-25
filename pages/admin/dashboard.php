@@ -55,7 +55,7 @@ $jml_mk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM 
             <li class="dropdown" onclick="toggleDropdown(this)">
                 <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="#">Jumlah Mahasiswa per Prodi</a></li>
+                    <li><a href="laporan.php">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="#">Statistik SKS</a></li>
                 </ul>
             </li>

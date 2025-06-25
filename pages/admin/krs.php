@@ -96,7 +96,7 @@ $result = mysqli_query($conn, $query);
             <li class="dropdown" onclick="toggleDropdown(this)">
                 <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
-                    <li><a href="#">Jumlah Mahasiswa per Prodi</a></li>
+                    <li><a href="laporan.php">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="#">Statistik SKS</a></li>
                 </ul>
             </li>

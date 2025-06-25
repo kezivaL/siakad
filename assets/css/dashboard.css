@@ -106,6 +106,17 @@ nav a {
     background-color: #1a252f;
 }
 
+.sidebar-menu li.dashboard:hover {
+    background-color: inherit;
+    color: inherit;
+}
+
+.sidebar-menu li.dashboard:hover a {
+    color: inherit;
+    font-weight: normal;
+}
+
+
 .sidebar-menu .arrow {
     position: absolute;
     right: 15px;

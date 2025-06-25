@@ -73,7 +73,7 @@ if (isset($_GET['edit'])) {
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
-            <li><a href="dashboard.php">Dashboard</a></li>
+            <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
             <li class="dropdown" onclick="toggleDropdown(this)">
                 <span>Data Master</span> <span class="arrow">&#9654;</span>
                 <ul class="submenu">
@@ -100,7 +100,6 @@ if (isset($_GET['edit'])) {
                 <ul class="submenu">
                     <li><a href="#">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="#">Statistik SKS yang Diambil</a></li>
-                    <li><a href="#">Cetak Rekap Nilai & KHS</a></li>
                 </ul>
             </li>
 

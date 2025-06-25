@@ -1,59 +1,59 @@
-<?php
+<?php 
 session_start();
 include '../../includes/koneksi.php';
 
-// Autentikasi
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../../auth/login.php");
     exit;
 }
 
-$id_kelas = $kode_mk = $nip = $sks = "";
+$username = $password = $role = $status = "";
 
 if (isset($_POST['simpan'])) {
-    $id_kelas = trim($_POST['id_kelas']);
-    $kode_mk = trim($_POST['kode_mk']);
-    $nip = trim($_POST['nip']);
-    $sks = trim($_POST['sks']);
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+    $role = trim($_POST['role']);
+    $status = trim($_POST['status']);
 
-    if ($id_kelas === "" || $kode_mk === "" || $nip === "" || $sks === "") {
-        die("Semua field harus diisi.");
+    if ($username === "" || $password === "" || $role === "" || $status === "") {
+        die("Semua data harus diisi.");
     }
 
-    $cek = mysqli_query($conn, "SELECT * FROM kelas WHERE id_kelas = '$id_kelas'");
+    $cek = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
+    $hashed_pw = password_hash($password, PASSWORD_DEFAULT);
+
     if (mysqli_num_rows($cek) > 0) {
-        $stmt = mysqli_prepare($conn, "UPDATE kelas SET kode_mk=?, nip=?, sks=? WHERE id_kelas=?");
-        mysqli_stmt_bind_param($stmt, "sssi", $kode_mk, $nip, $sks, $id_kelas);
+        $stmt = mysqli_prepare($conn, "UPDATE users SET password=?, role=?, status=? WHERE username=?");
+        mysqli_stmt_bind_param($stmt, "ssss", $hashed_pw, $role, $status, $username);
     } else {
-        $stmt = mysqli_prepare($conn, "INSERT INTO kelas (id_kelas, kode_mk, nip, sks) VALUES (?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "isss", $id_kelas, $kode_mk, $nip, $sks);
+        $stmt = mysqli_prepare($conn, "INSERT INTO users (username, password, role, status) VALUES (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "ssss", $username, $hashed_pw, $role, $status);
     }
 
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("Location: kelas.php");
+    header("Location: users.php");
     exit;
 }
 
 if (isset($_GET['hapus'])) {
-    $hapus_id = $_GET['hapus'];
-    $stmt = mysqli_prepare($conn, "DELETE FROM kelas WHERE id_kelas = ?");
-    mysqli_stmt_bind_param($stmt, "i", $hapus_id);
+    $hapus_user = $_GET['hapus'];
+    $stmt = mysqli_prepare($conn, "DELETE FROM users WHERE username = ?");
+    mysqli_stmt_bind_param($stmt, "s", $hapus_user);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("Location: kelas.php");
+    header("Location: users.php");
     exit;
 }
 
 if (isset($_GET['edit'])) {
-    $edit_id = $_GET['edit'];
-    $result = mysqli_query($conn, "SELECT * FROM kelas WHERE id_kelas = '$edit_id' LIMIT 1");
+    $edit_user = $_GET['edit'];
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE username = '$edit_user' LIMIT 1");
     if ($result && mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        $id_kelas = $row['id_kelas'];
-        $kode_mk = $row['kode_mk'];
-        $nip = $row['nip'];
-        $sks = $row['sks'];
+        $username = $row['username'];
+        $role = $row['role'];
+        $status = $row['status'];
     }
 }
 ?>
@@ -62,9 +62,9 @@ if (isset($_GET['edit'])) {
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Data Kelas</title>
+    <title>Manajemen User</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/kelas.css">
+    <link rel="stylesheet" href="../../assets/css/users.css">
 </head>
 <body>
 <header class="sticky-header">
@@ -76,7 +76,7 @@ if (isset($_GET['edit'])) {
         <ul class="sidebar-menu">
             <li><a href="dashboard.php">Dashboard</a></li>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Data Master</span> <span class="arrow">&#9654;</span>
+                <span>Data Master</span><span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
                     <li><a href="dosen.php">Data Dosen</a></li>
@@ -85,15 +85,13 @@ if (isset($_GET['edit'])) {
                 </ul>
             </li>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Manajemen Akademik</span>
-                <span class="arrow">&#9654;</span>
+                <span>Manajemen Akademik</span><span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
                     <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
                     <li><a href="users.php">Manajemen User</a></li>
                 </ul>
             </li>
-
             <!-- Laporan & Statistik -->
             <li class="dropdown" onclick="toggleDropdown(this)">
                 <span>Laporan & Statistik</span>
@@ -116,48 +114,50 @@ if (isset($_GET['edit'])) {
             </li>
         </ul>
     </aside>
-
     <main class="content">
         <div class="container">
-            <h2>Data Kelas</h2>
+            <h2>Manajemen User</h2>
             <form method="post" action="">
-                <label>ID Kelas:</label>
-                <input type="text" name="id_kelas" value="<?= htmlspecialchars($id_kelas) ?>" <?= isset($_GET['edit']) ? 'readonly' : '' ?> required>
-
-                <label>Kode Mata Kuliah:</label>
-                <input type="text" name="kode_mk" value="<?= htmlspecialchars($kode_mk) ?>" required>
-
-                <label>NIP Dosen:</label>
-                <input type="text" name="nip" value="<?= htmlspecialchars($nip) ?>" required>
-
-                <label>SKS:</label>
-                <input type="number" name="sks" value="<?= htmlspecialchars($sks) ?>" required>
-
+                <label>Username:</label>
+                <input type="text" name="username" value="<?= htmlspecialchars($username) ?>" <?= isset($_GET['edit']) ? 'readonly' : '' ?> required>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+                <label>Role:</label>
+                <select name="role" required>
+                    <option value="">-- Pilih Role --</option>
+                    <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Admin</option>
+                    <option value="dosen" <?= $role === 'dosen' ? 'selected' : '' ?>>Dosen</option>
+                    <option value="mahasiswa" <?= $role === 'mahasiswa' ? 'selected' : '' ?>>Mahasiswa</option>
+                </select>
+                <label>Status:</label>
+                <select name="status" required>
+                    <option value="">-- Pilih Status --</option>
+                    <option value="aktif" <?= $status === 'aktif' ? 'selected' : '' ?>>Aktif</option>
+                    <option value="nonaktif" <?= $status === 'nonaktif' ? 'selected' : '' ?>>Nonaktif</option>
+                </select>
                 <button type="submit" name="simpan">Simpan</button>
             </form>
 
             <table>
                 <thead>
                     <tr>
-                        <th>ID Kelas</th>
-                        <th>Kode MK</th>
-                        <th>NIP</th>
-                        <th>SKS</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $data = mysqli_query($conn, "SELECT * FROM kelas ORDER BY id_kelas ASC");
+                    $data = mysqli_query($conn, "SELECT * FROM users ORDER BY username ASC");
                     while ($row = mysqli_fetch_assoc($data)) {
                         echo "<tr>
-                            <td>{$row['id_kelas']}</td>
-                            <td>{$row['kode_mk']}</td>
-                            <td>{$row['nip']}</td>
-                            <td>{$row['sks']}</td>
+                            <td>{$row['username']}</td>
+                            <td>{$row['role']}</td>
+                            <td>{$row['status']}</td>
                             <td>
-                                <a href='?edit={$row['id_kelas']}' class='edit-btn'>Edit</a>
-                                <a href='?hapus={$row['id_kelas']}' onclick='return confirm(\"Hapus data ini?\")' class='delete-btn'>Hapus</a>
+                                <a href='?edit={$row['username']}' class='edit-btn'>Edit</a>
+                                <a href='?hapus={$row['username']}' onclick='return confirm(\"Hapus user ini?\")' class='delete-btn'>Hapus</a>
                             </td>
                         </tr>";
                     }

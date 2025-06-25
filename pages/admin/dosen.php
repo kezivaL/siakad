@@ -90,7 +90,6 @@ if (isset($_GET['edit'])) {
                 <span class="arrow">&#9654;</span>
                 <ul class="submenu">
                     <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
-                    <li><a href="nilai.php">Monitoring Nilai</a></li>
                     <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
                     <li><a href="users.php">Manajemen User</a></li>
                 </ul>

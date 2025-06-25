@@ -57,7 +57,6 @@ $jml_mk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM 
                 <ul class="submenu">
                     <li><a href="#">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="#">Statistik SKS</a></li>
-                    <li><a href="#">Cetak Rekap Nilai</a></li>
                 </ul>
             </li>
 

@@ -20,7 +20,7 @@ if (isset($_POST['simpan'])) {
     }
 
     $cek = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
-    $hashed_pw = password_hash($password, PASSWORD_DEFAULT);
+    $hashed_pw = md5($password);
 
     if (mysqli_num_rows($cek) > 0) {
         $stmt = mysqli_prepare($conn, "UPDATE users SET password=?, role=?, status=? WHERE username=?");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2025 at 09:48 AM
+-- Generation Time: Jun 25, 2025 at 02:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -97,7 +97,6 @@ CREATE TABLE IF NOT EXISTS `kelas` (
   `kode_mk` varchar(10) DEFAULT NULL,
   `nip` varchar(20) DEFAULT NULL,
   `nama_kelas` varchar(20) DEFAULT NULL,
-  `tahun_ajaran` varchar(9) DEFAULT NULL,
   PRIMARY KEY (`id_kelas`),
   KEY `kode_mk` (`kode_mk`),
   KEY `nip` (`nip`)
@@ -155,6 +154,13 @@ CREATE TABLE IF NOT EXISTS `mahasiswa` (
 --
 
 TRUNCATE TABLE `mahasiswa`;
+--
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`npm`, `nama`, `tgl_lahir`, `alamat`, `jenis_kelamin`, `prodi`, `foto`) VALUES
+('2716', 'naufal', '2004-09-05', 'depok', NULL, 'teknik informatika', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -206,7 +212,7 @@ DROP TABLE IF EXISTS `semester`;
 CREATE TABLE IF NOT EXISTS `semester` (
   `id_semester` int(11) NOT NULL AUTO_INCREMENT,
   `nama_semester` varchar(20) DEFAULT NULL,
-  `aktif` tinyint(1) DEFAULT 0,
+  `tahun_ajaran` varchar(20) NOT NULL,
   PRIMARY KEY (`id_semester`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -230,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` enum('aktif','nonaktif') DEFAULT 'aktif',
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Truncate table before insert `users`
@@ -242,7 +248,8 @@ TRUNCATE TABLE `users`;
 --
 
 INSERT INTO `users` (`id_user`, `username`, `password`, `role`, `status`) VALUES
-(1, 'admin', '0192023a7bbd73250516f069df18b500', 'admin', 'aktif');
+(1, 'admin', '0192023a7bbd73250516f069df18b500', 'admin', 'aktif'),
+(3, 'val', 'c481188f5d6327f12921e8d506cacc6f', 'admin', 'aktif');
 
 --
 -- Constraints for dumped tables

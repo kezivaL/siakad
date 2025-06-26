@@ -150,7 +150,7 @@ if (isset($_GET['edit'])) {
                             <td>{$row['nama']}</td>
                             <td>{$row['email']}</td>
                             <td>{$row['no_hp']}</td>
-                            <td>{$row['bidang']}</td>
+                            <td>{$row['bidang_keahlian']}</td>
                             <td>
                                 <a href='?edit={$row['nip']}' class='edit-btn'>Edit</a>
                                 <a href='?hapus={$row['nip']}' onclick='return confirm(\"Hapus data ini?\")' class='delete-btn'>Hapus</a>

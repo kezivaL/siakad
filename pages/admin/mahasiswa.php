@@ -85,40 +85,35 @@ if (isset($_GET['edit'])) {
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
-            <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
-
-            <!-- Data Master -->
-            <li class="dropdown <?= in_array($menuAktif, ['mahasiswa','dosen','matakuliah','kelas']) ? 'open' : '' ?>">
-                <div class="menu-item" onclick="toggleDropdown(this)">
-                    <span>Data Master</span>
-                    <span class="arrow"><?= in_array($menuAktif, ['mahasiswa','dosen','matakuliah','kelas']) ? '&#9660;' : '&#9654;' ?></span>
+            <div class="menu-item">
+                <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
+            </div>
+            <li class="dropdown" onclick="toggleDropdown(this)">
+                <div class="menu-item">
+                    <span>Data Master</span> <span class="arrow">&#9654;</span>
                 </div>
-                <ul class="submenu" style="display: <?= in_array($menuAktif, ['mahasiswa','dosen','matakuliah','kelas']) ? 'block' : 'none' ?>">
-                    <li><a href="mahasiswa.php" class="<?= $menuAktif == 'mahasiswa' ? 'active' : '' ?>">Data Mahasiswa</a></li>
-                    <li><a href="dosen.php" class="<?= $menuAktif == 'dosen' ? 'active' : '' ?>">Data Dosen</a></li>
-                    <li><a href="matakuliah.php" class="<?= $menuAktif == 'matakuliah' ? 'active' : '' ?>">Data Mata Kuliah</a></li>
-                    <li><a href="kelas.php" class="<?= $menuAktif == 'kelas' ? 'active' : '' ?>">Data Kelas</a></li>
+                <ul class="submenu">
+                    <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
+                    <li><a href="dosen.php">Data Dosen</a></li>
+                    <li><a href="matakuliah.php">Data Mata Kuliah</a></li>
+                    <li><a href="kelas.php">Data Kelas</a></li>
                 </ul>
             </li>
-
-            <!-- Manajemen Akademik -->
-            <li class="dropdown">
-                <div class="menu-item" onclick="toggleDropdown(this)">
+            <li class="dropdown" onclick="toggleDropdown(this)">
+                <div class="menu-item">
                     <span>Manajemen Akademik</span>
                     <span class="arrow">&#9654;</span>
                 </div>
                 <ul class="submenu">
-                    <li><a href="krs.php">Verifikasi KRS</a></li>
-                    <li><a href="jadwal.php">Monitoring Jadwal</a></li>
+                    <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
+                    <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
                     <li><a href="users.php">Manajemen User</a></li>
                 </ul>
             </li>
 
-            <!-- Laporan -->
-            <li class="dropdown">
-                <div class="menu-item" onclick="toggleDropdown(this)">
-                    <span>Laporan & Statistik</span>
-                    <span class="arrow">&#9654;</span>
+            <li class="dropdown" onclick="toggleDropdown(this)">
+                <div class="menu-item">
+                    <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
                 </div>
                 <ul class="submenu">
                     <li><a href="jumlah.php">Jumlah Mahasiswa per Prodi</a></li>
@@ -126,11 +121,9 @@ if (isset($_GET['edit'])) {
                 </ul>
             </li>
 
-            <!-- Pengaturan -->
-            <li class="dropdown">
-                <div class="menu-item" onclick="toggleDropdown(this)">
-                    <span>Pengaturan Sistem</span>
-                    <span class="arrow">&#9654;</span>
+            <li class="dropdown" onclick="toggleDropdown(this)">
+                <div class="menu-item">
+                    <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
                 </div>
                 <ul class="submenu">
                     <li><a href="tahun.php">Ganti Tahun Ajaran</a></li>

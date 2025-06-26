@@ -25,9 +25,13 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
-            <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
+            <div class="menu-item">
+                <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
+            </div>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Data Master</span> <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Data Master</span> <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
                     <li><a href="dosen.php">Data Dosen</a></li>
@@ -36,8 +40,10 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
                 </ul>
             </li>
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Manajemen Akademik</span>
-                <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Manajemen Akademik</span>
+                    <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
                     <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
@@ -46,7 +52,9 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
             </li>
 
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="jumlah.php">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="sks.php">Statistik SKS</a></li>
@@ -54,7 +62,9 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
             </li>
 
             <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
+                <div class="menu-item">
+                    <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="tahun.php">Ganti Tahun Ajaran</a></li>
                     <li><a href="reset.php">Reset Password</a></li>

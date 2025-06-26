@@ -7,9 +7,6 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-// Tandai menu aktif
-$menuAktif = 'matakuliah';
-
 $kode_mk = $nama_mk = $sks = $semester = "";
 
 // Simpan data

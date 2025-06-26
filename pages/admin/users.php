@@ -1,4 +1,5 @@
 <?php
+<?php
 session_start();
 include '../../includes/koneksi.php';
 
@@ -7,6 +8,10 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+$menuAktif = 'users';
+
+$username = $role = $status = "";
+$password_required = true;
 $menuAktif = 'users';
 
 $username = $role = $status = "";
@@ -20,8 +25,19 @@ if (isset($_POST['simpan'])) {
 
     if ($username === "" || $role === "" || $status === "") {
         die("Semua kolom wajib diisi.");
+    if ($username === "" || $role === "" || $status === "") {
+        die("Semua kolom wajib diisi.");
     }
 
+    if (isset($_POST['edit_mode']) && $_POST['edit_mode'] == '1') {
+        if ($password !== "") {
+            $hashed = md5($password);
+            $stmt = mysqli_prepare($conn, "UPDATE users SET password=?, role=?, status=? WHERE username=?");
+            mysqli_stmt_bind_param($stmt, "ssss", $hashed, $role, $status, $username);
+        } else {
+            $stmt = mysqli_prepare($conn, "UPDATE users SET role=?, status=? WHERE username=?");
+            mysqli_stmt_bind_param($stmt, "sss", $role, $status, $username);
+        }
     if (isset($_POST['edit_mode']) && $_POST['edit_mode'] == '1') {
         if ($password !== "") {
             $hashed = md5($password);
@@ -36,7 +52,12 @@ if (isset($_POST['simpan'])) {
             die("Password wajib diisi untuk user baru.");
         }
         $hashed = md5($password);
+        if ($password === "") {
+            die("Password wajib diisi untuk user baru.");
+        }
+        $hashed = md5($password);
         $stmt = mysqli_prepare($conn, "INSERT INTO users (username, password, role, status) VALUES (?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "ssss", $username, $hashed, $role, $status);
         mysqli_stmt_bind_param($stmt, "ssss", $username, $hashed, $role, $status);
     }
 
@@ -48,7 +69,9 @@ if (isset($_POST['simpan'])) {
 
 if (isset($_GET['hapus'])) {
     $hapus = $_GET['hapus'];
+    $hapus = $_GET['hapus'];
     $stmt = mysqli_prepare($conn, "DELETE FROM users WHERE username = ?");
+    mysqli_stmt_bind_param($stmt, "s", $hapus);
     mysqli_stmt_bind_param($stmt, "s", $hapus);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
@@ -57,6 +80,12 @@ if (isset($_GET['hapus'])) {
 }
 
 if (isset($_GET['edit'])) {
+    $edit = $_GET['edit'];
+    $q = mysqli_query($conn, "SELECT * FROM users WHERE username = '$edit'");
+    $r = mysqli_fetch_assoc($q);
+    $username = $r['username'];
+    $role = $r['role'];
+    $status = $r['status'];
     $edit = $_GET['edit'];
     $q = mysqli_query($conn, "SELECT * FROM users WHERE username = '$edit'");
     $r = mysqli_fetch_assoc($q);
@@ -79,6 +108,7 @@ if (isset($_GET['edit'])) {
     <h1>Dashboard Administrator</h1>
     <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
+
 
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
@@ -134,15 +164,21 @@ if (isset($_GET['edit'])) {
         </ul>
     </aside>
 
+
     <main class="content">
         <div class="container">
             <h2>Manajemen User</h2>
             <form method="post">
                 <input type="hidden" name="edit_mode" value="<?= isset($_GET['edit']) ? '1' : '0' ?>">
+            <form method="post">
+                <input type="hidden" name="edit_mode" value="<?= isset($_GET['edit']) ? '1' : '0' ?>">
                 <label>Username:</label>
                 <input type="text" name="username" value="<?= htmlspecialchars($username) ?>" <?= isset($_GET['edit']) ? 'readonly' : '' ?> required>
 
+
                 <label>Password:</label>
+                <input type="password" name="password" <?= isset($_GET['edit']) ? '' : 'required' ?>>
+
                 <input type="password" name="password" <?= isset($_GET['edit']) ? '' : 'required' ?>>
 
                 <label>Role:</label>
@@ -151,14 +187,23 @@ if (isset($_GET['edit'])) {
                     <option value="admin" <?= $role === "admin" ? "selected" : "" ?>>Admin</option>
                     <option value="dosen" <?= $role === "dosen" ? "selected" : "" ?>>Dosen</option>
                     <option value="mahasiswa" <?= $role === "mahasiswa" ? "selected" : "" ?>>Mahasiswa</option>
+                    <option value="">-- Pilih --</option>
+                    <option value="admin" <?= $role === "admin" ? "selected" : "" ?>>Admin</option>
+                    <option value="dosen" <?= $role === "dosen" ? "selected" : "" ?>>Dosen</option>
+                    <option value="mahasiswa" <?= $role === "mahasiswa" ? "selected" : "" ?>>Mahasiswa</option>
                 </select>
+
 
                 <label>Status:</label>
                 <select name="status" required>
                     <option value="">-- Pilih --</option>
                     <option value="aktif" <?= $status === "aktif" ? "selected" : "" ?>>Aktif</option>
                     <option value="nonaktif" <?= $status === "nonaktif" ? "selected" : "" ?>>Nonaktif</option>
+                    <option value="">-- Pilih --</option>
+                    <option value="aktif" <?= $status === "aktif" ? "selected" : "" ?>>Aktif</option>
+                    <option value="nonaktif" <?= $status === "nonaktif" ? "selected" : "" ?>>Nonaktif</option>
                 </select>
+
 
                 <button type="submit" name="simpan">Simpan</button>
             </form>
@@ -174,6 +219,7 @@ if (isset($_GET['edit'])) {
                 </thead>
                 <tbody>
                     <?php
+                    $data = mysqli_query($conn, "SELECT * FROM users ORDER BY username");
                     $data = mysqli_query($conn, "SELECT * FROM users ORDER BY username");
                     while ($row = mysqli_fetch_assoc($data)) {
                         echo "<tr>
@@ -192,6 +238,7 @@ if (isset($_GET['edit'])) {
         </div>
     </main>
 </div>
+
 
 <script>
 function toggleDropdown(el) {

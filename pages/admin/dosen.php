@@ -10,8 +10,12 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
 // Tandai menu aktif
 $menuAktif = 'dosen';
 
+// Tandai menu aktif
+$menuAktif = 'dosen';
+
 $nip = $nama = $email = $no_hp = $bidang = "";
 
+// Simpan
 // Simpan
 if (isset($_POST['simpan'])) {
     $nip = trim($_POST['nip']);
@@ -40,6 +44,7 @@ if (isset($_POST['simpan'])) {
 }
 
 // Hapus
+// Hapus
 if (isset($_GET['hapus'])) {
     $hapus_nip = $_GET['hapus'];
     $stmt = mysqli_prepare($conn, "DELETE FROM dosen WHERE nip = ?");
@@ -50,6 +55,7 @@ if (isset($_GET['hapus'])) {
     exit;
 }
 
+// Edit
 // Edit
 if (isset($_GET['edit'])) {
     $edit_nip = $_GET['edit'];
@@ -75,10 +81,12 @@ if (isset($_GET['edit'])) {
 </head>
 <body>
 
+
 <header class="sticky-header">
     <h1>Dashboard Administrator</h1>
     <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
+
 
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">

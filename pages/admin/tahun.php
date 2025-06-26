@@ -1,4 +1,5 @@
 <?php 
+<?php 
 session_start();
 include '../../includes/koneksi.php';
 
@@ -6,6 +7,8 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../../auth/login.php");
     exit;
 }
+
+$menuAktif = 'tahun';
 
 $menuAktif = 'tahun';
 

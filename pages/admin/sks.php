@@ -16,7 +16,7 @@ $menuAktif = 'sks';
     <meta charset="UTF-8">
     <title>Statistik SKS Mahasiswa</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/sks.css">
+    <link rel="stylesheet" href="../../assets/css/laporan.css">
 </head>
 <body>
 <header class="sticky-header">

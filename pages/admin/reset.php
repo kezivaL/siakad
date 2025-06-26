@@ -24,7 +24,6 @@ $result = mysqli_query($conn, "SELECT * FROM users");
 
 <header class="sticky-header">
     <h1>Dashboard Administrator</h1>
-    <h1>Dashboard Administrator</h1>
     <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
 

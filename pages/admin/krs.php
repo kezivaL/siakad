@@ -34,7 +34,6 @@ SELECT
         JOIN krs k2 ON n.id_krs = k2.id_krs
         WHERE k2.npm = m.npm
     ), 2) AS ipk,
-    ), 2) AS ipk,
     ROUND((
         SELECT AVG(n2.nilai_angka)
         FROM nilai n2
@@ -64,10 +63,8 @@ $result = mysqli_query($conn, $query);
     <title>Verifikasi KRS - Admin</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/krs.css">
-    <link rel="stylesheet" href="../../assets/css/krs.css">
 </head>
 <body>
-<header class="sticky-header">
 <header class="sticky-header">
     <h1>Dashboard Administrator</h1>
     <nav>
@@ -129,9 +126,6 @@ $result = mysqli_query($conn, $query);
     <main class="content">
         <div class="container">
             <h2>Verifikasi KRS Mahasiswa</h2>
-    <main class="content">
-        <div class="container">
-            <h2>Verifikasi KRS Mahasiswa</h2>
 
         <!-- Form filter -->
         <form method="GET">
@@ -172,13 +166,6 @@ $result = mysqli_query($conn, $query);
 
 
 <script>
-function toggleDropdown(el) {
-    const submenu = el.querySelector('.submenu');
-    const arrow = el.querySelector('.arrow');
-    const isOpen = submenu.style.display === 'block';
-    submenu.style.display = isOpen ? 'none' : 'block';
-    arrow.innerHTML = isOpen ? '&#9654;' : '&#9660;';
-}
 function toggleDropdown(el) {
     const submenu = el.querySelector('.submenu');
     const arrow = el.querySelector('.arrow');

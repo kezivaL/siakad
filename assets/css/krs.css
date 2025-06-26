@@ -8,6 +8,7 @@ h2 {
     color: #004080;
     font-size: 24px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 /* ====== Layout ====== */
@@ -15,61 +16,23 @@ h2 {
     display: flex;
     min-height: 100vh;
 }
-
-/* ====== Konten ====== */
 .content {
     flex: 1;
     padding: 2rem;
     background-color: #f1f3f5;
 }
 
-/* === Tabel Verifikasi === */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    margin-top: 20px;
+/* ====== Container ====== */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-table th {
-    background-color: #004080;
-    color: white;
-    font-weight: bold;
-    padding: 12px;
-    text-align: center;
-}
-
-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-    background-color: #f9f9f9;
-}
-
-/* === Tombol Aksi === */
-.btn {
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-weight: bold;
-    text-decoration: none;
-    font-size: 13px;
-    display: inline-block;
-}
-
-.btn-approve {
-    background-color: #28a745; /* Hijau */
-    color: white;
-}
-
-.btn-reject {
-    background-color: #dc3545; /* Merah */
-    color: white;
-}
-
-/* === Form Pencarian & Filter === */
+/* ====== Form Pencarian & Filter ====== */
 form {
     margin-bottom: 20px;
     display: flex;
@@ -77,14 +40,13 @@ form {
     align-items: center;
     flex-wrap: wrap;
 }
-
-form input[type="text"], form select {
+form input[type="text"],
+form select {
     padding: 8px 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
 }
-
 form button {
     background-color: #004080;
     color: white;
@@ -94,28 +56,110 @@ form button {
     cursor: pointer;
     font-weight: bold;
 }
-
 .reset-link {
     margin-left: auto;
     color: #004080;
     font-weight: bold;
     text-decoration: none;
 }
+.reset-link:hover {
+    text-decoration: underline;
+    color: #002855;
+}
 
+/* ====== Tabel ====== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+thead {
+    background-color: #004080;
+    color: white;
+}
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+tbody tr:hover {
+    background-color: #e6f0ff;
+}
+
+/* ====== Tombol Aksi ====== */
+.btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 13px;
+    display: inline-block;
+}
+.btn-approve {
+    background-color: #28a745;
+    color: white;
+}
+.btn-approve:hover {
+    background-color: #218838;
+}
+.btn-reject {
+    background-color: #dc3545;
+    color: white;
+}
+.btn-reject:hover {
+    background-color: #c82333;
+}
+
+/* ===== Sidebar Dropdown ===== */
+.sidebar-menu .dropdown .menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #f5f8ff;
+    font-weight: bold;
+    color: #004080;
+}
+.sidebar-menu .dropdown.open .menu-item {
+    background-color: #dceeff;
+}
+.sidebar-menu .submenu {
+    list-style: none;
+    padding-left: 20px;
+    display: none;
+}
+.sidebar-menu .submenu a {
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px;
+}
+.sidebar-menu .submenu a:hover {
+    background-color: #e9f5ff;
+}
+.sidebar-menu .submenu a.active {
+    background-color: #d0e6ff;
+    color: #004080;
+    font-weight: bold;
+}
+
+/* ===== Responsive ===== */
 @media screen and (max-width: 768px) {
     .main-wrapper {
         flex-direction: column;
     }
-
     .sidebar {
         width: 100%;
     }
-
     form {
         flex-direction: column;
         align-items: stretch;
     }
-
     table {
         font-size: 12px;
     }

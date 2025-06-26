@@ -8,6 +8,9 @@
     --border-gray: #dbe4f0;
 }
 
+
+
+
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -210,3 +213,4 @@ nav a {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
 }
+

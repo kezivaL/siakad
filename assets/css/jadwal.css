@@ -24,6 +24,43 @@ h2 {
     text-align: center;
 }
 
+form {
+    margin-bottom: 30px;
+}
+
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="time"],
+form select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+form button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+form button:hover {
+    background-color: #004a99;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -47,4 +84,17 @@ tbody tr:nth-child(even) {
 
 tbody tr:hover {
     background-color: #eaf2ff;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
 }

@@ -7,8 +7,12 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+// Tandai menu aktif
+$menuAktif = 'dosen';
+
 $nip = $nama = $email = $no_hp = $bidang = "";
 
+// Simpan
 if (isset($_POST['simpan'])) {
     $nip = trim($_POST['nip']);
     $nama = trim($_POST['nama']);
@@ -35,6 +39,7 @@ if (isset($_POST['simpan'])) {
     exit;
 }
 
+// Hapus
 if (isset($_GET['hapus'])) {
     $hapus_nip = $_GET['hapus'];
     $stmt = mysqli_prepare($conn, "DELETE FROM dosen WHERE nip = ?");
@@ -45,6 +50,7 @@ if (isset($_GET['hapus'])) {
     exit;
 }
 
+// Edit
 if (isset($_GET['edit'])) {
     $edit_nip = $_GET['edit'];
     $result = mysqli_query($conn, "SELECT * FROM dosen WHERE nip = '$edit_nip' LIMIT 1");
@@ -68,26 +74,37 @@ if (isset($_GET['edit'])) {
     <link rel="stylesheet" href="../../assets/css/dosen.css">
 </head>
 <body>
+
 <header class="sticky-header">
     <h1>Dashboard Administrator</h1>
     <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
+
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
             <li class="dashboard"><a href="dashboard.php">Dashboard</a></li>
-            <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Data Master</span> <span class="arrow">&#9654;</span>
-                <ul class="submenu">
-                    <li><a href="mahasiswa.php">Data Mahasiswa</a></li>
-                    <li><a href="dosen.php">Data Dosen</a></li>
-                    <li><a href="matakuliah.php">Data Mata Kuliah</a></li>
-                    <li><a href="kelas.php">Data Kelas</a></li>
+
+            <!-- Menu Data Master -->
+            <li class="dropdown <?= in_array($menuAktif, ['mahasiswa','dosen','matakuliah','kelas']) ? 'open' : '' ?>">
+                <div class="menu-item" onclick="toggleDropdown(this)">
+                    <span>Data Master</span>
+                    <span class="arrow"><?= in_array($menuAktif, ['mahasiswa','dosen','matakuliah','kelas']) ? '&#9660;' : '&#9654;' ?></span>
+                </div>
+                <ul class="submenu" style="display: <?= in_array($menuAktif, ['mahasiswa','dosen','matakuliah','kelas']) ? 'block' : 'none' ?>">
+                    <li><a href="mahasiswa.php" class="<?= $menuAktif == 'mahasiswa' ? 'active' : '' ?>">Data Mahasiswa</a></li>
+                    <li><a href="dosen.php" class="<?= $menuAktif == 'dosen' ? 'active' : '' ?>">Data Dosen</a></li>
+                    <li><a href="matakuliah.php" class="<?= $menuAktif == 'matakuliah' ? 'active' : '' ?>">Data Mata Kuliah</a></li>
+                    <li><a href="kelas.php" class="<?= $menuAktif == 'kelas' ? 'active' : '' ?>">Data Kelas</a></li>
                 </ul>
             </li>
-            <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Manajemen Akademik</span>
-                <span class="arrow">&#9654;</span>
+
+            <!-- Menu Akademik -->
+            <li class="dropdown">
+                <div class="menu-item" onclick="toggleDropdown(this)">
+                    <span>Manajemen Akademik</span>
+                    <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="krs.php">Verifikasi KRS Mahasiswa</a></li>
                     <li><a href="jadwal.php">Monitoring Jadwal Kuliah</a></li>
@@ -95,16 +112,24 @@ if (isset($_GET['edit'])) {
                 </ul>
             </li>
 
-            <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Laporan & Statistik</span> <span class="arrow">&#9654;</span>
+            <!-- Laporan -->
+            <li class="dropdown">
+                <div class="menu-item" onclick="toggleDropdown(this)">
+                    <span>Laporan & Statistik</span>
+                    <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="jumlah.php">Jumlah Mahasiswa per Prodi</a></li>
                     <li><a href="sks.php">Statistik SKS</a></li>
                 </ul>
             </li>
 
-            <li class="dropdown" onclick="toggleDropdown(this)">
-                <span>Pengaturan Sistem</span> <span class="arrow">&#9654;</span>
+            <!-- Pengaturan -->
+            <li class="dropdown">
+                <div class="menu-item" onclick="toggleDropdown(this)">
+                    <span>Pengaturan Sistem</span>
+                    <span class="arrow">&#9654;</span>
+                </div>
                 <ul class="submenu">
                     <li><a href="tahun.php">Ganti Tahun Ajaran</a></li>
                     <li><a href="reset.php">Reset Password</a></li>

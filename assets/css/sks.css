@@ -1,0 +1,55 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 1000px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table thead {
+    background-color: #4776f5;
+    color: white;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.sidebar-menu li a.active {
+    background-color: #DCEBFF;
+    font-weight: bold;
+}
+
+.sidebar-menu .dropdown.open > .menu-item .arrow {
+    transform: rotate(90deg);
+}
+
+.submenu {
+    background-color: #F5F8FF;
+}
+
+.submenu li a:hover {
+    background-color: #DCEBFF;
+}

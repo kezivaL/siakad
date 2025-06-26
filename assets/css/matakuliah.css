@@ -14,6 +14,13 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+.sidebar-menu .submenu a.active {
+    background-color: #d0e6ff;
+    color: #004080;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
 h2 {
     color: #004080;
     margin-bottom: 20px;

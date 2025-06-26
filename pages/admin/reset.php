@@ -2,19 +2,20 @@
 session_start();
 include '../../includes/koneksi.php';
 
-// Hanya admin yang boleh akses
-if ($_SESSION['role'] != 'admin') {
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../../auth/login.php");
     exit;
 }
 
-// Ambil semua user
+$menuAktif = 'reset';
+
 $result = mysqli_query($conn, "SELECT * FROM users");
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Reset Password User</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/reset.css">
@@ -22,7 +23,7 @@ $result = mysqli_query($conn, "SELECT * FROM users");
 <body>
 
 <header class="sticky-header">
-    <h1>Reset Password Pengguna</h1>
+    <h1>Dashboard Administrator</h1>
     <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
 
@@ -77,36 +78,41 @@ $result = mysqli_query($conn, "SELECT * FROM users");
         </ul>
     </aside>
 
-    <div class="content">
-        <h2>Daftar User</h2>
-        <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
-            <div class="alert-success">✅ Password berhasil direset ke default (username).</div>
-        <?php endif; ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($user = mysqli_fetch_assoc($result)) { ?>
+    <main class="content">
+        <div class="container">
+            <h2>Reset Password Pengguna</h2>
+
+            <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+                <div class="alert-success">✅ Password berhasil direset ke default (username).</div>
+            <?php endif; ?>
+
+            <table>
+                <thead>
                     <tr>
-                        <td><?= $user['username'] ?></td>
-                        <td><?= $user['role'] ?></td>
-                        <td>
-                            <form method="POST" action="proses_reset.php" onsubmit="return confirm('Reset password untuk <?= $user['username'] ?>?')">
-                                <input type="hidden" name="id" value="<?= $user['id_user'] ?>">
-                                <button type="submit" class="btn-reset">Reset Password</button>
-                            </form>
-                        </td>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Aksi</th>
                     </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    <?php while ($user = mysqli_fetch_assoc($result)) { ?>
+                        <tr>
+                            <td><?= $user['username'] ?></td>
+                            <td><?= $user['role'] ?></td>
+                            <td>
+                                <form method="POST" action="proses_reset.php" onsubmit="return confirm('Reset password untuk <?= $user['username'] ?>?')">
+                                    <input type="hidden" name="id" value="<?= $user['id_user'] ?>">
+                                    <button type="submit" class="btn-reset">Reset Password</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+    </main>
 </div>
+
 <script>
 function toggleDropdown(el) {
     const submenu = el.querySelector('.submenu');

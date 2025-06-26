@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 include '../../includes/koneksi.php';
 
@@ -7,14 +7,14 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+$menuAktif = 'tahun';
+
 // Simpan data tahun aktif
 if (isset($_POST['simpan'])) {
     $id_semester = $_POST['id_semester'];
 
-    // Reset semua semester tidak aktif
     mysqli_query($conn, "UPDATE semester SET aktif = 0");
 
-    // Aktifkan semester terpilih
     $stmt = mysqli_prepare($conn, "UPDATE semester SET aktif = 1 WHERE id_semester = ?");
     mysqli_stmt_bind_param($stmt, "i", $id_semester);
     mysqli_stmt_execute($stmt);

@@ -6,6 +6,8 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../../auth/login.php");
     exit;
 }
+
+$menuAktif = 'sks';
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +16,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     <meta charset="UTF-8">
     <title>Statistik SKS Mahasiswa</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/laporan.css">
+    <link rel="stylesheet" href="../../assets/css/sks.css">
 </head>
 <body>
 <header class="sticky-header">

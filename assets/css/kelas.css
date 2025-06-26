@@ -1,90 +1,115 @@
-.content {
-    flex: 1;
-    padding: 30px;
-    background-color: #f9fbfd;
-}
+/* ====== Halaman Data Kelas ====== */
 
+/* Container Utama */
 .container {
-    background: white;
-    border-radius: 10px;
+    max-width: 1000px;
+    margin: 30px auto;
+    background: #ffffff;
     padding: 25px;
-    margin: 20px auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .container h2 {
+    text-align: center;
     color: #004080;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
+/* Sidebar Menu Aktif */
+.sidebar-menu .submenu a.active {
+    background-color: #d0e6ff;
+    color: #004080;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* ====== FORM ====== */
 form {
     margin-bottom: 30px;
 }
 
-label {
+form label {
     display: block;
-    margin-bottom: 6px;
+    margin: 10px 0 5px;
     font-weight: bold;
+    color: #333;
 }
 
-input[type="text"], select {
+form input[type="text"],
+form input[type="date"],
+form input[type="number"] {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
     border-radius: 6px;
     border: 1px solid #ccc;
     box-sizing: border-box;
+    margin-bottom: 15px;
 }
 
-button {
-    background-color: #004080;
+form button {
+    background-color: #0066cc;
     color: white;
     border: none;
-    padding: 10px 25px;
+    padding: 10px 20px;
     border-radius: 6px;
-    font-size: 15px;
+    font-weight: bold;
     cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #003366;
+form button:hover {
+    background-color: #004a99;
 }
 
+/* ====== TABEL DATA ====== */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
-table th, table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-table thead {
-    background-color: #004080;
+thead {
+    background-color: #0066cc;
     color: white;
 }
 
-.edit-btn, .delete-btn {
-    text-decoration: none;
-    padding: 6px 12px;
+th, td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #e6f0ff;
+}
+
+/* ====== Tombol Aksi Edit & Hapus ====== */
+.edit-btn,
+.delete-btn {
+    padding: 6px 10px;
     border-radius: 4px;
     color: white;
-    font-size: 13px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-right: 5px;
 }
 
 .edit-btn {
     background-color: #f39c12;
 }
 
-.delete-btn {
-    background-color: #e74c3c;
-}
-
 .edit-btn:hover {
     background-color: #d68910;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
 }
 
 .delete-btn:hover {

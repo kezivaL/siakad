@@ -7,6 +7,8 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+$menuAktif = 'jumlah';
+
 $result = mysqli_query($conn, "SELECT prodi, COUNT(*) as jumlah FROM mahasiswa GROUP BY prodi ORDER BY jumlah DESC");
 ?>
 
@@ -91,10 +93,10 @@ $result = mysqli_query($conn, "SELECT prodi, COUNT(*) as jumlah FROM mahasiswa G
                     $no = 1;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>
-                                <td>{$no}</td>
-                                <td>{$row['prodi']}</td>
-                                <td>{$row['jumlah']}</td>
-                            </tr>";
+                            <td>{$no}</td>
+                            <td>{$row['prodi']}</td>
+                            <td>{$row['jumlah']}</td>
+                        </tr>";
                         $no++;
                     }
                     ?>
@@ -113,6 +115,5 @@ function toggleDropdown(el) {
     arrow.innerHTML = isOpen ? '&#9654;' : '&#9660;';
 }
 </script>
-
 </body>
 </html>

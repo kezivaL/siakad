@@ -7,8 +7,12 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+// Tandai menu aktif
+$menuAktif = 'dosen';
+
 $nip = $nama = $email = $no_hp = $bidang = "";
 
+// Simpan
 if (isset($_POST['simpan'])) {
     $nip = trim($_POST['nip']);
     $nama = trim($_POST['nama']);
@@ -35,6 +39,7 @@ if (isset($_POST['simpan'])) {
     exit;
 }
 
+// Hapus
 if (isset($_GET['hapus'])) {
     $hapus_nip = $_GET['hapus'];
     $stmt = mysqli_prepare($conn, "DELETE FROM dosen WHERE nip = ?");
@@ -45,6 +50,7 @@ if (isset($_GET['hapus'])) {
     exit;
 }
 
+// Edit
 if (isset($_GET['edit'])) {
     $edit_nip = $_GET['edit'];
     $result = mysqli_query($conn, "SELECT * FROM dosen WHERE nip = '$edit_nip' LIMIT 1");
@@ -68,10 +74,12 @@ if (isset($_GET['edit'])) {
     <link rel="stylesheet" href="../../assets/css/dosen.css">
 </head>
 <body>
+
 <header class="sticky-header">
     <h1>Dashboard Administrator</h1>
     <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
+
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">

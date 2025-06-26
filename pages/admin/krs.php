@@ -17,9 +17,6 @@ $where = "WHERE krs.status_verifikasi = 'Menunggu'";
 if ($cari !== '') {
     $where .= " AND m.nama LIKE '%$cari%'";
 }
-if ($semester_filter !== 0) {
-    $where .= " AND s.id_semester = $semester_filter";
-}
 
 // Query utama
 $query = "
@@ -27,7 +24,6 @@ SELECT
     m.npm,
     m.nama,
     s.nama_semester,
-    s.id_semester,
     krs.status_verifikasi,
     SUM(mk.sks) AS total_sks,
     ROUND((
@@ -40,7 +36,7 @@ SELECT
         SELECT AVG(n2.nilai_angka)
         FROM nilai n2
         JOIN krs k3 ON n2.id_krs = k3.id_krs
-        WHERE k3.npm = m.npm AND k3.id_semester = s.id_semester
+        WHERE k3.npm = m.npm AND k3.id_semester = krs.id_semester
     ),2) AS ips
 FROM krs
 JOIN mahasiswa m ON m.npm = krs.npm
@@ -48,9 +44,10 @@ JOIN kelas kls ON kls.id_kelas = krs.id_kelas
 JOIN mata_kuliah mk ON mk.kode_mk = kls.kode_mk
 JOIN semester s ON s.id_semester = krs.id_semester
 $where
-GROUP BY m.npm, s.id_semester, krs.status_verifikasi
-ORDER BY m.nama, s.id_semester
+GROUP BY m.npm, s.nama_semester, krs.status_verifikasi
+ORDER BY m.nama, s.nama_semester
 ";
+
 
 $result = mysqli_query($conn, $query);
 ?>
@@ -117,16 +114,6 @@ $result = mysqli_query($conn, $query);
         <!-- Form filter -->
         <form method="GET">
             <input type="text" name="cari" placeholder="Cari nama mahasiswa..." value="<?= htmlspecialchars($cari) ?>">
-            <select name="semester">
-                <option value="">-- Semua Semester --</option>
-                <?php
-                $semesters = mysqli_query($conn, "SELECT * FROM semester ORDER BY id_semester DESC");
-                while ($s = mysqli_fetch_assoc($semesters)) {
-                    $selected = ($semester_filter == $s['id_semester']) ? 'selected' : '';
-                    echo "<option value='{$s['id_semester']}' $selected>{$s['nama_semester']}</option>";
-                }
-                ?>
-            </select>
             <button type="submit">🔍 Cari</button>
             <a href="verifikasi_krs.php" class="reset-link">🔄 Reset</a>
         </form>
@@ -134,32 +121,29 @@ $result = mysqli_query($conn, $query);
         <!-- Tabel Verifikasi -->
         <table>
             <thead>
-                <tr>
-                    <th>NPM</th>
-                    <th>Nama</th>
-                    <th>Semester</th>
-                    <th>IPS</th>
-                    <th>IPK</th>
-                    <th>SKS</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($row = mysqli_fetch_assoc($result)) { ?>
-                    <tr>
-                        <td><?= $row['npm'] ?></td>
-                        <td><?= $row['nama'] ?></td>
-                        <td><?= $row['nama_semester'] ?></td>
-                        <td><?= $row['ips'] ?? '-' ?></td>
-                        <td><?= $row['ipk'] ?? '-' ?></td>
-                        <td><?= $row['total_sks'] ?> SKS</td>
-                        <td>
-                            <a class="btn btn-approve" href="proses_verifikasi.php?npm=<?= $row['npm'] ?>&id_semester=<?= $row['id_semester'] ?>&aksi=terima">✔️</a>
-                            <a class="btn btn-reject" href="proses_verifikasi.php?npm=<?= $row['npm'] ?>&id_semester=<?= $row['id_semester'] ?>&aksi=tolak" onclick="return confirm('Tolak KRS ini?')">✖️</a>
-                        </td>
-                    </tr>
-                <?php } ?>
-            </tbody>
+    <tr>
+        <th>NPM</th>
+        <th>Nama</th>
+        <th>Semester</th>
+        <th>SKS</th>
+        <th>Aksi</th>
+    </tr>
+</thead>
+<tbody>
+    <?php while($row = mysqli_fetch_assoc($result)) { ?>
+        <tr>
+            <td><?= $row['npm'] ?></td>
+            <td><?= $row['nama'] ?></td>
+            <td><?= $row['nama_semester'] ?></td>
+            <td><?= $row['total_sks'] ?> SKS</td>
+            <td>
+                <a class="btn btn-approve" href="proses_krs.php?npm=<?= $row['npm'] ?>&semester=<?= urlencode($row['nama_semester']) ?>&aksi=terima">✔️</a>
+                <a class="btn btn-reject" href="proses_krs.php?npm=<?= $row['npm'] ?>&semester=<?= urlencode($row['nama_semester']) ?>&aksi=tolak" onclick="return confirm('Tolak KRS ini?')">✖️</a>
+            </td>
+        </tr>
+    <?php } ?>
+</tbody>
+
         </table>
     </div>
 </div>

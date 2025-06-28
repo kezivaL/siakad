@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2025 at 04:16 PM
+-- Generation Time: Jun 25, 2025 at 02:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -27,84 +27,139 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
-CREATE TABLE `admin` (
-  `id_admin` int(11) NOT NULL,
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id_admin` int(11) NOT NULL AUTO_INCREMENT,
   `nama` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `no_hp` varchar(20) DEFAULT NULL
+  `no_hp` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_admin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `admin`
+--
+
+TRUNCATE TABLE `admin`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `dosen`
 --
 
-CREATE TABLE `dosen` (
+DROP TABLE IF EXISTS `dosen`;
+CREATE TABLE IF NOT EXISTS `dosen` (
   `nip` varchar(20) NOT NULL,
   `nama` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `no_hp` varchar(20) DEFAULT NULL,
-  `bidang_keahlian` varchar(100) DEFAULT NULL
+  `bidang_keahlian` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`nip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `dosen`
+--
+
+TRUNCATE TABLE `dosen`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `jadwal`
 --
 
-CREATE TABLE `jadwal` (
-  `id_jadwal` int(11) NOT NULL,
+DROP TABLE IF EXISTS `jadwal`;
+CREATE TABLE IF NOT EXISTS `jadwal` (
+  `id_jadwal` int(11) NOT NULL AUTO_INCREMENT,
   `id_kelas` int(11) DEFAULT NULL,
   `hari` enum('Senin','Selasa','Rabu','Kamis','Jumat') DEFAULT NULL,
   `jam_mulai` time DEFAULT NULL,
   `jam_selesai` time DEFAULT NULL,
-  `ruang` varchar(20) DEFAULT NULL
+  `ruang` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_jadwal`),
+  KEY `id_kelas` (`id_kelas`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `jadwal`
+--
+
+TRUNCATE TABLE `jadwal`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `kelas`
 --
 
-CREATE TABLE `kelas` (
-  `id_kelas` int(11) NOT NULL,
+DROP TABLE IF EXISTS `kelas`;
+CREATE TABLE IF NOT EXISTS `kelas` (
+  `id_kelas` int(11) NOT NULL AUTO_INCREMENT,
   `kode_mk` varchar(10) DEFAULT NULL,
   `nip` varchar(20) DEFAULT NULL,
   `nama_kelas` varchar(20) DEFAULT NULL,
-  `tahun_ajaran` varchar(9) DEFAULT NULL
+  PRIMARY KEY (`id_kelas`),
+  KEY `kode_mk` (`kode_mk`),
+  KEY `nip` (`nip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `kelas`
+--
+
+TRUNCATE TABLE `kelas`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `krs`
 --
 
-CREATE TABLE `krs` (
-  `id_krs` int(11) NOT NULL,
+DROP TABLE IF EXISTS `krs`;
+CREATE TABLE IF NOT EXISTS `krs` (
+  `id_krs` int(11) NOT NULL AUTO_INCREMENT,
   `npm` varchar(15) DEFAULT NULL,
   `id_kelas` int(11) DEFAULT NULL,
-  `id_semester` int(11) DEFAULT NULL
+  `id_semester` int(11) DEFAULT NULL,
+  `status_verifikasi` enum('Menunggu','Disetujui','Ditolak') NOT NULL,
+  PRIMARY KEY (`id_krs`),
+  KEY `npm` (`npm`),
+  KEY `id_kelas` (`id_kelas`),
+  KEY `id_semester` (`id_semester`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `krs`
+--
+
+TRUNCATE TABLE `krs`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `mahasiswa`
 --
 
-CREATE TABLE `mahasiswa` (
+DROP TABLE IF EXISTS `mahasiswa`;
+CREATE TABLE IF NOT EXISTS `mahasiswa` (
   `npm` varchar(15) NOT NULL,
   `nama` varchar(100) DEFAULT NULL,
   `tgl_lahir` date DEFAULT NULL,
   `alamat` text DEFAULT NULL,
   `jenis_kelamin` enum('L','P') DEFAULT NULL,
   `prodi` varchar(100) DEFAULT NULL,
-  `foto` varchar(255) DEFAULT NULL
+  `foto` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`npm`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Truncate table before insert `mahasiswa`
+--
+
+TRUNCATE TABLE `mahasiswa`;
+--
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`npm`, `nama`, `tgl_lahir`, `alamat`, `jenis_kelamin`, `prodi`, `foto`) VALUES
+('2716', 'naufal', '2004-09-05', 'depok', NULL, 'teknik informatika', NULL);
 
 -- --------------------------------------------------------
 
@@ -112,176 +167,89 @@ CREATE TABLE `mahasiswa` (
 -- Table structure for table `mata_kuliah`
 --
 
-CREATE TABLE `mata_kuliah` (
+DROP TABLE IF EXISTS `mata_kuliah`;
+CREATE TABLE IF NOT EXISTS `mata_kuliah` (
   `kode_mk` varchar(10) NOT NULL,
   `nama_mk` varchar(100) DEFAULT NULL,
   `sks` int(11) DEFAULT NULL,
-  `semester` int(11) DEFAULT NULL
+  `semester` int(11) DEFAULT NULL,
+  PRIMARY KEY (`kode_mk`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `mata_kuliah`
+--
+
+TRUNCATE TABLE `mata_kuliah`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `nilai`
 --
 
-CREATE TABLE `nilai` (
-  `id_nilai` int(11) NOT NULL,
+DROP TABLE IF EXISTS `nilai`;
+CREATE TABLE IF NOT EXISTS `nilai` (
+  `id_nilai` int(11) NOT NULL AUTO_INCREMENT,
   `id_krs` int(11) DEFAULT NULL,
   `nilai_angka` decimal(5,2) DEFAULT NULL,
-  `nilai_huruf` varchar(2) DEFAULT NULL
+  `nilai_huruf` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`id_nilai`),
+  KEY `id_krs` (`id_krs`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `nilai`
+--
+
+TRUNCATE TABLE `nilai`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `semester`
 --
 
-CREATE TABLE `semester` (
-  `id_semester` int(11) NOT NULL,
+DROP TABLE IF EXISTS `semester`;
+CREATE TABLE IF NOT EXISTS `semester` (
+  `id_semester` int(11) NOT NULL AUTO_INCREMENT,
   `nama_semester` varchar(20) DEFAULT NULL,
-  `aktif` tinyint(1) DEFAULT 0
+  `tahun_ajaran` varchar(20) NOT NULL,
+  PRIMARY KEY (`id_semester`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `semester`
+--
+
+TRUNCATE TABLE `semester`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id_user` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id_user` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role` enum('admin','mahasiswa','dosen') DEFAULT NULL,
-  `status` enum('aktif','nonaktif') DEFAULT 'aktif'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `status` enum('aktif','nonaktif') DEFAULT 'aktif',
+  PRIMARY KEY (`id_user`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Truncate table before insert `users`
+--
+
+TRUNCATE TABLE `users`;
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_user`, `username`, `password`, `role`, `status`) VALUES
-(1, 'admin', '0192023a7bbd73250516f069df18b500', 'admin', 'aktif');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id_admin`);
-
---
--- Indexes for table `dosen`
---
-ALTER TABLE `dosen`
-  ADD PRIMARY KEY (`nip`);
-
---
--- Indexes for table `jadwal`
---
-ALTER TABLE `jadwal`
-  ADD PRIMARY KEY (`id_jadwal`),
-  ADD KEY `id_kelas` (`id_kelas`);
-
---
--- Indexes for table `kelas`
---
-ALTER TABLE `kelas`
-  ADD PRIMARY KEY (`id_kelas`),
-  ADD KEY `kode_mk` (`kode_mk`),
-  ADD KEY `nip` (`nip`);
-
---
--- Indexes for table `krs`
---
-ALTER TABLE `krs`
-  ADD PRIMARY KEY (`id_krs`),
-  ADD KEY `npm` (`npm`),
-  ADD KEY `id_kelas` (`id_kelas`),
-  ADD KEY `id_semester` (`id_semester`);
-
---
--- Indexes for table `mahasiswa`
---
-ALTER TABLE `mahasiswa`
-  ADD PRIMARY KEY (`npm`);
-
---
--- Indexes for table `mata_kuliah`
---
-ALTER TABLE `mata_kuliah`
-  ADD PRIMARY KEY (`kode_mk`);
-
---
--- Indexes for table `nilai`
---
-ALTER TABLE `nilai`
-  ADD PRIMARY KEY (`id_nilai`),
-  ADD KEY `id_krs` (`id_krs`);
-
---
--- Indexes for table `semester`
---
-ALTER TABLE `semester`
-  ADD PRIMARY KEY (`id_semester`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `jadwal`
---
-ALTER TABLE `jadwal`
-  MODIFY `id_jadwal` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `kelas`
---
-ALTER TABLE `kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `krs`
---
-ALTER TABLE `krs`
-  MODIFY `id_krs` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `nilai`
---
-ALTER TABLE `nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `semester`
---
-ALTER TABLE `semester`
-  MODIFY `id_semester` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+(1, 'admin', '0192023a7bbd73250516f069df18b500', 'admin', 'aktif'),
+(3, 'val', 'c481188f5d6327f12921e8d506cacc6f', 'admin', 'aktif');
 
 --
 -- Constraints for dumped tables

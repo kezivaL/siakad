@@ -1,79 +1,74 @@
-/* ====== Mahasiswa Page CSS ====== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+}
+
 .container {
-    max-width: 1000px;
+    max-width: 900px;
     margin: 30px auto;
-    background: #ffffff;
+    background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.container h2 {
+h2 {
+    color: #004080;
+    margin-bottom: 20px;
     text-align: center;
-    color: #004080;
-    margin-bottom: 25px;
 }
 
-.sidebar-menu .submenu a.active {
-    background-color: #d0e6ff;
-    color: #004080;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-/* FORM STYLE */
 form {
     margin-bottom: 30px;
 }
 
-form label {
+label {
     display: block;
-    margin: 10px 0 5px;
+    margin-bottom: 5px;
     font-weight: bold;
-    color: #333;
 }
 
-form input[type="text"],
-form input[type="date"] {
+input[type="text"],
+input[type="number"] {
     width: 100%;
     padding: 10px;
+    margin-bottom: 15px;
     border-radius: 6px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    margin-bottom: 15px;
 }
 
-form button {
+button[type="submit"] {
     background-color: #0066cc;
     color: white;
     border: none;
     padding: 10px 20px;
+    font-size: 16px;
     border-radius: 6px;
-    font-weight: bold;
     cursor: pointer;
     width: 100%;
 }
 
-form button:hover {
+button[type="submit"]:hover {
     background-color: #004a99;
 }
 
-/* TABLE STYLE */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
 thead {
-    background-color: #0066cc;
+    background-color: #004080;
     color: white;
 }
 
 th, td {
     padding: 12px;
-    border: 1px solid #ccc;
-    text-align: left;
+    border: 1px solid #ddd;
+    text-align: center;
 }
 
 tbody tr:nth-child(even) {
@@ -81,18 +76,17 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:hover {
-    background-color: #e6f0ff;
+    background-color: #e1ecf7;
 }
 
-/* ACTION BUTTONS */
 .edit-btn,
 .delete-btn {
     padding: 6px 10px;
     border-radius: 4px;
     color: white;
     text-decoration: none;
-    font-size: 14px;
-    margin-right: 5px;
+    margin: 0 3px;
+    display: inline-block;
 }
 
 .edit-btn {

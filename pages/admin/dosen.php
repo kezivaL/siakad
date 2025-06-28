@@ -7,60 +7,54 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-// Penanda menu aktif
-$menuAktif = 'mahasiswa';
+$nip = $nama = $email = $no_hp = $bidang = "";
 
-$npm = $nama = $prodi = $alamat = $tgl_lahir = "";
-
-// Simpan data
 if (isset($_POST['simpan'])) {
-    $npm = trim($_POST['npm']);
+    $nip = trim($_POST['nip']);
     $nama = trim($_POST['nama']);
-    $prodi = trim($_POST['prodi']);
-    $alamat = trim($_POST['alamat']);
-    $tgl_lahir = trim($_POST['tgl_lahir']);
+    $email = trim($_POST['email']);
+    $no_hp = trim($_POST['no_hp']);
+    $bidang = trim($_POST['bidang']);
 
-    if ($npm === "" || $nama === "" || $prodi === "" || $alamat === "" || $tgl_lahir === "") {
+    if ($nip === "" || $nama === "" || $email === "" || $no_hp === "" || $bidang === "") {
         die("Semua data harus diisi.");
     }
 
-    $cek = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE npm = '$npm'");
+    $cek = mysqli_query($conn, "SELECT * FROM dosen WHERE nip = '$nip'");
     if (mysqli_num_rows($cek) > 0) {
-        $stmt = mysqli_prepare($conn, "UPDATE mahasiswa SET nama=?, prodi=?, alamat=?, tgl_lahir=? WHERE npm=?");
-        mysqli_stmt_bind_param($stmt, "sssss", $nama, $prodi, $alamat, $tgl_lahir, $npm);
+        $stmt = mysqli_prepare($conn, "UPDATE dosen SET nama=?, email=?, no_hp=?, bidang=? WHERE nip=?");
+        mysqli_stmt_bind_param($stmt, "sssss", $nama, $email, $no_hp, $bidang, $nip);
     } else {
-        $stmt = mysqli_prepare($conn, "INSERT INTO mahasiswa (npm, nama, prodi, alamat, tgl_lahir) VALUES (?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($stmt, "sssss", $npm, $nama, $prodi, $alamat, $tgl_lahir);
+        $stmt = mysqli_prepare($conn, "INSERT INTO dosen (nip, nama, email, no_hp, bidang) VALUES (?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "sssss", $nip, $nama, $email, $no_hp, $bidang);
     }
 
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("Location: mahasiswa.php");
+    header("Location: dosen.php");
     exit;
 }
 
-// Hapus
 if (isset($_GET['hapus'])) {
-    $hapus_npm = $_GET['hapus'];
-    $stmt = mysqli_prepare($conn, "DELETE FROM mahasiswa WHERE npm = ?");
-    mysqli_stmt_bind_param($stmt, "s", $hapus_npm);
+    $hapus_nip = $_GET['hapus'];
+    $stmt = mysqli_prepare($conn, "DELETE FROM dosen WHERE nip = ?");
+    mysqli_stmt_bind_param($stmt, "s", $hapus_nip);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("Location: mahasiswa.php");
+    header("Location: dosen.php");
     exit;
 }
 
-// Edit
 if (isset($_GET['edit'])) {
-    $edit_npm = $_GET['edit'];
-    $result = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE npm = '$edit_npm' LIMIT 1");
+    $edit_nip = $_GET['edit'];
+    $result = mysqli_query($conn, "SELECT * FROM dosen WHERE nip = '$edit_nip' LIMIT 1");
     if ($result && mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        $npm = $row['npm'];
+        $nip = $row['nip'];
         $nama = $row['nama'];
-        $prodi = $row['prodi'];
-        $alamat = $row['alamat'];
-        $tgl_lahir = $row['tgl_lahir'];
+        $email = $row['email'];
+        $no_hp = $row['no_hp'];
+        $bidang = $row['bidang'];
     }
 }
 ?>
@@ -69,19 +63,15 @@ if (isset($_GET['edit'])) {
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Data Mahasiswa</title>
+    <title>Data Dosen</title>
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/mahasiswa.css">
+    <link rel="stylesheet" href="../../assets/css/dosen.css">
 </head>
 <body>
-
 <header class="sticky-header">
     <h1>Dashboard Administrator</h1>
-    <nav>
-        <a href="../../auth/logout.php">Logout</a>
-    </nav>
+    <nav><a href="../../auth/logout.php">Logout</a></nav>
 </header>
-
 <div class="main-wrapper">
     <aside class="sidebar sticky-sidebar">
         <ul class="sidebar-menu">
@@ -135,50 +125,45 @@ if (isset($_GET['edit'])) {
 
     <main class="content">
         <div class="container">
-            <h2>Data Mahasiswa</h2>
+            <h2>Data Dosen</h2>
             <form method="post" action="">
-                <label>NPM:</label>
-                <input type="text" name="npm" value="<?= htmlspecialchars($npm) ?>" <?= isset($_GET['edit']) ? 'readonly' : '' ?> required>
-
+                <label>NIP:</label>
+                <input type="text" name="nip" value="<?= htmlspecialchars($nip) ?>" <?= isset($_GET['edit']) ? 'readonly' : '' ?> required>
                 <label>Nama:</label>
                 <input type="text" name="nama" value="<?= htmlspecialchars($nama) ?>" required>
-
-                <label>Prodi:</label>
-                <input type="text" name="prodi" value="<?= htmlspecialchars($prodi) ?>" required>
-
-                <label>Alamat:</label>
-                <input type="text" name="alamat" value="<?= htmlspecialchars($alamat) ?>" required>
-
-                <label>Tanggal Lahir:</label>
-                <input type="date" name="tgl_lahir" value="<?= htmlspecialchars($tgl_lahir) ?>" required>
-
+                <label>Email:</label>
+                <input type="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
+                <label>No. HP:</label>
+                <input type="text" name="no_hp" value="<?= htmlspecialchars($no_hp) ?>" required>
+                <label>Bidang:</label>
+                <input type="text" name="bidang" value="<?= htmlspecialchars($bidang) ?>" required>
                 <button type="submit" name="simpan">Simpan</button>
             </form>
 
             <table>
                 <thead>
                     <tr>
-                        <th>NPM</th>
+                        <th>NIP</th>
                         <th>Nama</th>
-                        <th>Prodi</th>
-                        <th>Alamat</th>
-                        <th>Tgl Lahir</th>
+                        <th>Email</th>
+                        <th>No. HP</th>
+                        <th>Bidang</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $data = mysqli_query($conn, "SELECT * FROM mahasiswa ORDER BY npm ASC");
+                    $data = mysqli_query($conn, "SELECT * FROM dosen ORDER BY nama ASC");
                     while ($row = mysqli_fetch_assoc($data)) {
                         echo "<tr>
-                            <td>{$row['npm']}</td>
+                            <td>{$row['nip']}</td>
                             <td>{$row['nama']}</td>
-                            <td>{$row['prodi']}</td>
-                            <td>{$row['alamat']}</td>
-                            <td>{$row['tgl_lahir']}</td>
+                            <td>{$row['email']}</td>
+                            <td>{$row['no_hp']}</td>
+                            <td>{$row['bidang_keahlian']}</td>
                             <td>
-                                <a href='?edit={$row['npm']}' class='edit-btn'>Edit</a>
-                                <a href='?hapus={$row['npm']}' onclick='return confirm(\"Hapus data ini?\")' class='delete-btn'>Hapus</a>
+                                <a href='?edit={$row['nip']}' class='edit-btn'>Edit</a>
+                                <a href='?hapus={$row['nip']}' onclick='return confirm(\"Hapus data ini?\")' class='delete-btn'>Hapus</a>
                             </td>
                         </tr>";
                     }
@@ -198,6 +183,5 @@ function toggleDropdown(el) {
     arrow.innerHTML = isOpen ? '&#9654;' : '&#9660;';
 }
 </script>
-
 </body>
 </html>
